@@ -168,6 +168,7 @@ import {
   GuildOnboardingPromptType,
   AttachmentFlags,
   RoleFlags,
+  GuildWidgetStyle,
 } from 'discord-api-types/v10';
 import { ChildProcess } from 'node:child_process';
 import { EventEmitter } from 'node:events';
@@ -1381,6 +1382,7 @@ export class Guild extends AnonymousGuild {
   public fetchWelcomeScreen(): Promise<WelcomeScreen>;
   public fetchWidget(): Promise<Widget>;
   public fetchWidgetSettings(): Promise<GuildWidgetSettings>;
+  public widgetImageURL(style?: GuildWidgetStyle): string;
   public leave(): Promise<Guild>;
   public disableInvites(disabled?: boolean): Promise<Guild>;
   public setAFKChannel(afkChannel: VoiceChannelResolvable | null, reason?: string): Promise<Guild>;
@@ -3449,6 +3451,7 @@ export class Widget extends Base {
   private constructor(client: Client<true>, data: RawWidgetData);
   private _patch(data: RawWidgetData): void;
   public fetch(): Promise<Widget>;
+  public imageURL(style?: GuildWidgetStyle): string;
   public id: Snowflake;
   public name: string;
   public instantInvite?: string;
@@ -3968,6 +3971,7 @@ export class GuildManager extends CachedManager<Snowflake, Guild, GuildResolvabl
   public create(options: GuildCreateOptions): Promise<Guild>;
   public fetch(options: Snowflake | FetchGuildOptions): Promise<Guild>;
   public fetch(options?: FetchGuildsOptions): Promise<Collection<Snowflake, OAuth2Guild>>;
+  public widgetImageURL(guild: GuildResolvable, style?: GuildWidgetStyle): string;
 }
 
 export interface AddOrRemoveGuildMemberRoleOptions {
