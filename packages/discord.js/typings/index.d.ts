@@ -624,6 +624,8 @@ export abstract class BaseGuild extends Base {
 
 export class BaseGuildEmoji extends Emoji {
   protected constructor(client: Client<true>, data: RawGuildEmojiData, guild: Guild | GuildPreview);
+  public imageURL(options?: BaseImageURLOptions): string;
+  public get url(): string;
   public available: boolean | null;
   public get createdAt(): Date;
   public get createdTimestamp(): number;
@@ -1299,6 +1301,7 @@ export class Emoji extends Base {
   public id: Snowflake | null;
   public name: string | null;
   public get identifier(): string;
+  public imageURL(options?: BaseImageURLOptions): string | null;
   public get url(): string | null;
   public toJSON(): unknown;
   public toString(): string;
@@ -1515,7 +1518,6 @@ export class GuildEmoji extends BaseGuildEmoji {
   public guild: Guild;
   public author: User | null;
   public get roles(): GuildEmojiRoleManager;
-  public get url(): string;
   public delete(reason?: string): Promise<GuildEmoji>;
   public edit(options: GuildEmojiEditOptions): Promise<GuildEmoji>;
   public equals(other: GuildEmoji | unknown): boolean;
