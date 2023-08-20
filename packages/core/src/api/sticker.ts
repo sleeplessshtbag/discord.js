@@ -4,7 +4,8 @@ import type { RequestData, REST } from '@discordjs/rest';
 import {
 	Routes,
 	type RESTGetAPIStickerResult,
-	type RESTGetNitroStickerPacksResult,
+	// @ts-expect-error discord-api-types
+	type RESTGetStickerPacksResult,
 	type Snowflake,
 } from 'discord-api-types/v10';
 
@@ -17,8 +18,20 @@ export class StickersAPI {
 	 * @see {@link https://discord.com/developers/docs/resources/sticker#list-nitro-sticker-packs}
 	 * @param options - The options for fetching the sticker packs
 	 */
-	public async getNitroStickers({ signal }: Pick<RequestData, 'signal'> = {}) {
-		return this.rest.get(Routes.nitroStickerPacks(), { signal }) as Promise<RESTGetNitroStickerPacksResult>;
+	public async getStickers({ signal }: Pick<RequestData, 'signal'> = {}) {
+		// @ts-expect-error discord-api-types
+		return this.rest.get(Routes.stickerPacks(), { signal }) as Promise<RESTGetStickerPacksResult>;
+	}
+
+	/**
+	 * Fetches all of the nitro sticker packs
+	 *
+	 * @see {@link https://discord.com/developers/docs/resources/sticker#list-nitro-sticker-packs}
+	 * @param options - The options for fetching the sticker packs
+	 * @deprecated Use {@link getStickers} instead.
+	 */
+	public async getNitroStickers(options: Pick<RequestData, 'signal'> = {}) {
+		return this.getStickers(options);
 	}
 
 	/**
