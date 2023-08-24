@@ -1667,11 +1667,13 @@ export class GuildScheduledEvent<S extends GuildScheduledEventStatus = GuildSche
   public get guild(): Guild | null;
   public get url(): string;
   public image: string | null;
+  public get partial(): false;
   public coverImageURL(options?: Readonly<BaseImageURLOptions>): string | null;
   public createInviteURL(options?: GuildScheduledEventInviteURLCreateOptions): Promise<string>;
   public edit<T extends GuildScheduledEventSetStatusArg<S>>(
     options: GuildScheduledEventEditOptions<S, T>,
   ): Promise<GuildScheduledEvent<T>>;
+  public fetch(force?: boolean): Promise<GuildScheduledEvent<S>>;
   public delete(): Promise<GuildScheduledEvent<S>>;
   public setName(name: string, reason?: string): Promise<GuildScheduledEvent<S>>;
   public setScheduledStartTime(scheduledStartTime: DateResolvable, reason?: string): Promise<GuildScheduledEvent<S>>;
@@ -4338,7 +4340,14 @@ export interface AddGuildMemberOptions {
   fetchWhenExisting?: boolean;
 }
 
-export type AllowedPartial = User | Channel | GuildMember | Message | MessageReaction | ThreadMember;
+export type AllowedPartial =
+  | User
+  | Channel
+  | GuildMember
+  | Message
+  | MessageReaction
+  | GuildScheduledEvent
+  | ThreadMember;
 
 export type AllowedThreadTypeForNewsChannel = ChannelType.AnnouncementThread;
 
@@ -4911,9 +4920,9 @@ export interface ClientEvents {
     oldGuildScheduledEvent: GuildScheduledEvent | null,
     newGuildScheduledEvent: GuildScheduledEvent,
   ];
-  guildScheduledEventDelete: [guildScheduledEvent: GuildScheduledEvent];
-  guildScheduledEventUserAdd: [guildScheduledEvent: GuildScheduledEvent, user: User];
-  guildScheduledEventUserRemove: [guildScheduledEvent: GuildScheduledEvent, user: User];
+  guildScheduledEventDelete: [guildScheduledEvent: GuildScheduledEvent | PartialGuildScheduledEvent];
+  guildScheduledEventUserAdd: [guildScheduledEvent: GuildScheduledEvent | PartialGuildScheduledEvent, user: User];
+  guildScheduledEventUserRemove: [guildScheduledEvent: GuildScheduledEvent | PartialGuildScheduledEvent, user: User];
 }
 
 export interface ClientFetchInviteOptions {
@@ -6125,6 +6134,9 @@ export interface PartialMessage
   extends Partialize<Message, 'type' | 'system' | 'pinned' | 'tts', 'content' | 'cleanContent' | 'author'> {}
 
 export interface PartialMessageReaction extends Partialize<MessageReaction, 'count'> {}
+
+export interface PartialGuildScheduledEvent
+  extends Partialize<GuildScheduledEvent, 'userCount', 'status' | 'privacyLevel' | 'name' | 'entityType'> {}
 
 export interface PartialThreadMember extends Partialize<ThreadMember, 'flags' | 'joinedAt' | 'joinedTimestamp'> {}
 
