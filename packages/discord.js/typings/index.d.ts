@@ -4917,7 +4917,7 @@ export interface ClientEvents {
   stickerUpdate: [oldSticker: Sticker, newSticker: Sticker];
   guildScheduledEventCreate: [guildScheduledEvent: GuildScheduledEvent];
   guildScheduledEventUpdate: [
-    oldGuildScheduledEvent: GuildScheduledEvent | null,
+    oldGuildScheduledEvent: GuildScheduledEvent | PartialGuildScheduledEvent | null,
     newGuildScheduledEvent: GuildScheduledEvent,
   ];
   guildScheduledEventDelete: [guildScheduledEvent: GuildScheduledEvent | PartialGuildScheduledEvent];
