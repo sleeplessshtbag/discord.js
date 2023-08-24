@@ -1,4 +1,5 @@
 {
+	"$schema": "https://json.schemastore.org/package.json",
 	"name": "@discordjs/rest",
 	"version": "2.0.1",
 	"description": "The REST API for discord.js",
@@ -6,34 +7,49 @@
 		"test": "vitest run",
 		"build": "tsup",
 		"build:docs": "tsc -p tsconfig.docs.json",
-		"lint": "prettier --check . && cross-env TIMING=1 eslint src __tests__ --ext .mjs,.js,.ts --format=pretty",
-		"format": "prettier --write . && cross-env TIMING=1 eslint src __tests__ --ext .mjs,.js,.ts --fix --format=pretty",
+		"lint": "prettier --check . && cross-env TIMING=1 eslint --format=pretty src __tests__",
+		"format": "prettier --write . && cross-env TIMING=1 eslint --fix --format=pretty src __tests__",
 		"fmt": "yarn format",
 		"docs": "yarn build:docs && api-extractor run --local && api-extractor run --local --config ./api-extractor-docs.json",
 		"prepack": "yarn lint && yarn test && yarn build",
 		"changelog": "git cliff --prepend ./CHANGELOG.md -u -c ./cliff.toml -r ../../ --include-path 'packages/rest/*'",
 		"release": "cliff-jumper"
 	},
-	"types": "./dist/index.d.ts",
 	"exports": {
 		".": {
 			"node": {
-				"types": "./dist/index.d.ts",
-				"import": "./dist/index.mjs",
-				"require": "./dist/index.js"
+				"require": {
+					"types": "./dist/index.d.ts",
+					"default": "./dist/index.js"
+				},
+				"import": {
+					"types": "./dist/index.d.mts",
+					"default": "./dist/index.mjs"
+				}
 			},
 			"default": {
-				"types": "./dist/web.d.ts",
-				"import": "./dist/web.mjs",
-				"require": "./dist/web.js"
+				"require": {
+					"types": "./dist/web.d.ts",
+					"default": "./dist/web.js"
+				},
+				"import": {
+					"types": "./dist/web.d.mts",
+					"default": "./dist/web.mjs"
+				}
 			}
 		},
 		"./*": {
-			"types": "./dist/strategies/*.d.ts",
-			"import": "./dist/strategies/*.mjs",
-			"require": "./dist/strategies/*.js"
+			"require": {
+				"types": "./dist/strategies/*.d.ts",
+				"default": "./dist/strategies/*.js"
+			},
+			"import": {
+				"types": "./dist/strategies/*.d.mts",
+				"default": "./dist/strategies/*.mjs"
+			}
 		}
 	},
+	"types": "./dist/index.d.ts",
 	"directories": {
 		"lib": "src",
 		"test": "__tests__"
@@ -84,7 +100,7 @@
 		"cross-env": "^7.0.3",
 		"esbuild-plugin-version-injector": "^1.2.0",
 		"eslint": "^8.47.0",
-		"eslint-config-neon": "^0.1.47",
+		"eslint-config-neon": "^0.1.54",
 		"eslint-formatter-pretty": "^5.0.0",
 		"prettier": "^3.0.2",
 		"tsup": "^7.2.0",
